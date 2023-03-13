@@ -9,4 +9,5 @@ public class TestAd {
 
     public int varPublic;
     public static int varPublicStatic;
+
 }
