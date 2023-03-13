@@ -9,12 +9,6 @@ public class AdMod extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
     }
-    public void thanhLVTest() {
-
-    }
-    public int varPublic;
-    private boolean isPrivate;
-
 }
