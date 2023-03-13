@@ -11,4 +11,9 @@ public class AdMod extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+    public void thanhLVTest() {
+
+    }
+    public int varPublic;
+    private boolean isPrivate;
 }
