@@ -16,4 +16,5 @@ public class AdMod extends AppCompatActivity {
     }
     public int varPublic;
     private boolean isPrivate;
+
 }
