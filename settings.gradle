@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "AdModFrameWork"
 include ':app'
 include ':mylibrary'
+include ':nativetemplates'

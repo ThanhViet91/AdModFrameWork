@@ -31,6 +31,14 @@ public class AdsUtil {
 
     private AdsConfigs mAdsConfig;
 
+    public AdsConfigs getAdsConfig() {
+        return mAdsConfig;
+    }
+
+    public void setAdsConfig(AdsConfigs mAdsConfig) {
+        this.mAdsConfig = mAdsConfig;
+    }
+
     public AdsUtil(Context context, AdsConfigs adsConfigs) {
         if (context == null || adsConfigs == null) return;
         this.mContext = context;
