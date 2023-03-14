@@ -65,7 +65,7 @@ public class BaseApplication extends Application
         MobileAds.initialize(context, initializationStatus -> {});
     }
 
-    interface LoadConfigAppListener extends AsyncListener<String> {
+    public interface LoadConfigAppListener extends AsyncListener<String> {
     }
 
     public LoadConfigAppListener loadConfigAppListener;
