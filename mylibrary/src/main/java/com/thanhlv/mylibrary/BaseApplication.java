@@ -168,7 +168,6 @@ public class BaseApplication extends Application
         private boolean isLoadingAd = false;
         private boolean isShowingAd = false;
         private final AdsConfigs mAdsConfigs;
-
         /**
          * Keep track of the time an app open ad is loaded to ensure you don't show an expired ad.
          */

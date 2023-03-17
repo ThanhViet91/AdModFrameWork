@@ -144,7 +144,6 @@ public class AdsUtil {
     // for NativeAd
     private NativeAd nativeAd;
     private AdLoader adLoader;
-
     public void loadNativeAdmob() {
         if (adLoader == null || nativeAd == null)
             adLoader = new AdLoader.Builder(mContext, mAdsConfig.isDebug() ? AD_NATIVE_ID_DEV : mAdsConfig.getAD_NATIVE_ID())

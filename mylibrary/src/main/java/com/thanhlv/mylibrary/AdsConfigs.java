@@ -21,6 +21,14 @@ public class AdsConfigs {
     private AdsConfigs() {
     }
 
+    public void setAdViewBanner(ViewGroup adViewBanner) {
+        this.adViewBanner = adViewBanner;
+    }
+
+    public void setAdSize(AdSize adSize) {
+        this.adSize = adSize;
+    }
+
     public ViewGroup getAdViewBanner() {
         return adViewBanner;
     }
@@ -135,7 +143,6 @@ public class AdsConfigs {
             this.isDebug = debug;
             return this;
         }
-
 
         public AdsConfigs build() {
             AdsConfigs adsConfigs = new AdsConfigs();
