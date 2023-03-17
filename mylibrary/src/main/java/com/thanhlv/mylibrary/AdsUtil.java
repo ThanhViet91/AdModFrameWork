@@ -42,12 +42,10 @@ public class AdsUtil {
         if (context == null || adsConfigs == null) return;
         this.mContext = context;
         this.mAdsConfig = adsConfigs;
-        this.mAdViewBanner = adsConfigs.getAdViewBanner();
-        if (mAdViewBanner != null) initialAdViewBanner();
+        if (adsConfigs.getAdViewBanner() != null) initialAdViewBanner();
     }
 
     private Context mContext;
-    private ViewGroup mAdViewBanner;
     private boolean isLoaded = false;
 
 
@@ -61,12 +59,12 @@ public class AdsUtil {
 
     // for BannerAd
     public void initialAdViewBanner() {
-        if (SharedPref.isProApp(mContext)) return;
+        if (SharedPref.isProApp(mContext) || this.mAdsConfig.getAdViewBanner() == null) return;
         if (isLoaded) return;
         AdView adView = new AdView(mContext);
         adView.setAdSize(mAdsConfig.getAdSize());
         adView.setAdUnitId(mAdsConfig.isDebug() ? AD_BANNER_ID_DEV : mAdsConfig.getAD_BANNER_ID());
-        mAdViewBanner.addView(adView);
+        this.mAdsConfig.getAdViewBanner().addView(adView);
 
         //requestAd
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -81,10 +79,11 @@ public class AdsUtil {
     }
 
     public void showBanner() {
+        if (this.mAdsConfig.getAdViewBanner() == null) return;
         if (SharedPref.isProApp(mContext)) {
-            mAdViewBanner.setVisibility(View.GONE);
+            this.mAdsConfig.getAdViewBanner().setVisibility(View.GONE);
         } else
-            mAdViewBanner.setVisibility(View.VISIBLE);
+            this.mAdsConfig.getAdViewBanner().setVisibility(View.VISIBLE);
     }
 
     // for Interstitial
