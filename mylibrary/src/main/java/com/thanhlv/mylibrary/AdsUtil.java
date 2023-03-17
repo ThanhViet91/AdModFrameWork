@@ -46,6 +46,11 @@ public class AdsUtil {
     }
 
     private Context mContext;
+
+    public void setContext (Context context) {
+        this.mContext = context;
+    }
+
     private boolean isLoaded = false;
 
 
@@ -143,6 +148,10 @@ public class AdsUtil {
     private NativeAd nativeAd;
     private AdLoader adLoader;
     public void loadNativeAdmob() {
+        if (SharedPref.isProApp(mContext)) {
+            nativeAd = null;
+            return;
+        }
         if (adLoader == null || nativeAd == null)
             adLoader = new AdLoader.Builder(mContext, mAdsConfig.isDebug() ? AD_NATIVE_ID_DEV : mAdsConfig.getAD_NATIVE_ID())
                     .forNativeAd(nativeAd_ -> {
