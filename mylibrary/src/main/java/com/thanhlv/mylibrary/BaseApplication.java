@@ -26,8 +26,6 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.appopen.AppOpenAd;
 import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import java.util.Date;
 
@@ -37,7 +35,7 @@ import java.util.Date;
 public class BaseApplication extends Application
         implements ActivityLifecycleCallbacks, LifecycleObserver {
 
-    private AppOpenAdManager appOpenAdManager;
+    public AppOpenAdManager appOpenAdManager;
     private Activity currentActivity;
     private final String TAG = "BaseApplication";
     public final String CHANNEL_ID = "com.thanhlv.baseapplication";
@@ -53,39 +51,14 @@ public class BaseApplication extends Application
     public void onCreate() {
         super.onCreate();
         this.registerActivityLifecycleCallbacks(this);
-        // Log the Mobile Ads SDK version.
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
         context = this;
-        appOpenAdManager = new AppOpenAdManager(adsConfigs);
-        loadConfigsApp();
         createChannelNotification();
     }
 
     public void initMobileAds() {
-        MobileAds.initialize(context, initializationStatus -> {});
-    }
-
-    public interface LoadConfigAppListener extends AsyncListener<String> {
-    }
-
-    public LoadConfigAppListener loadConfigAppListener;
-    FirebaseRemoteConfig configsApp;
-
-    private void loadConfigsApp() {
-        configsApp = FirebaseRemoteConfig.getInstance();
-        AppConfigs.getInstance().setConfig(configsApp);
-        FirebaseRemoteConfigSettings settings = new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(0)
-                .build();
-        configsApp.setConfigSettingsAsync(settings);
-//        config.setDefaultsAsync(R.xml.remote_config_defaults);    //remember set default config xml
-        configsApp.fetchAndActivate()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if (loadConfigAppListener != null)
-                            loadConfigAppListener.onSuccess("load config app done!");
-                    }
-                });
+        MobileAds.initialize(context, initializationStatus -> {
+        });
     }
 
     private void createChannelNotification() {
@@ -189,7 +162,7 @@ public class BaseApplication extends Application
     /**
      * Inner class that loads and shows app open ads.
      */
-    private static class AppOpenAdManager {
+    public static class AppOpenAdManager {
 
         private AppOpenAd appOpenAd = null;
         private boolean isLoadingAd = false;
