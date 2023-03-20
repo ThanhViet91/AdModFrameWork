@@ -31,7 +31,7 @@ public class AdsUtil {
     private AdsConfigs mAdsConfig;
 
     public AdsConfigs getAdsConfig() {
-        return mAdsConfig;
+        return this.mAdsConfig;
     }
 
     public void setAdsConfig(AdsConfigs mAdsConfig) {
@@ -64,7 +64,7 @@ public class AdsUtil {
 
     // for BannerAd
     public void initialAdViewBanner() {
-        if (SharedPref.isProApp(mContext) || this.mAdsConfig.getAdViewBanner() == null) return;
+        if (SharedPref.isProApp(mContext) || this.mAdsConfig == null || this.mAdsConfig.getAdViewBanner() == null) return;
         if (isLoaded) return;
         AdView adView = new AdView(mContext);
         adView.setAdSize(mAdsConfig.getAdSize());
@@ -101,7 +101,7 @@ public class AdsUtil {
                 && checkInterstitialAlready();
     }
 
-    public static long lastTime = 0;
+    public long lastTime = 0;
 
     private boolean checkInterstitialAlready() {
         boolean passPercent = new Random().nextInt(100) < mAdsConfig.getPercentShow();
