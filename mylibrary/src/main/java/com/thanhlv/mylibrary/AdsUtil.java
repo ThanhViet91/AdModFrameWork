@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
@@ -44,7 +43,6 @@ public class AdsUtil {
         this.mAdsConfig = adsConfigs;
         if (adsConfigs.getAdViewBanner() != null) initialAdViewBanner();
     }
-
     private Context mContext;
 
     public void setContext (Context context) {
@@ -52,7 +50,6 @@ public class AdsUtil {
     }
 
     private boolean isLoaded = false;
-
 
     @SuppressLint("StaticFieldLeak")
     private static AdsUtil instance;
@@ -73,7 +70,6 @@ public class AdsUtil {
 
         //requestAd
         AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
         adView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
@@ -81,10 +77,11 @@ public class AdsUtil {
                 isLoaded = true;
             }
         });
+        RunUtil.runInBackground(() -> adView.loadAd(adRequest));
     }
 
     public void showBanner() {
-        if (this.mAdsConfig.getAdViewBanner() == null) return;
+        if (this.mAdsConfig == null || this.mAdsConfig.getAdViewBanner() == null) return;
         if (SharedPref.isProApp(mContext)) {
             this.mAdsConfig.getAdViewBanner().setVisibility(View.GONE);
         } else
@@ -92,7 +89,6 @@ public class AdsUtil {
     }
 
     // for Interstitial
-
     public InterstitialAd mInterstitialAdAdmob = null;
 
     public boolean interstitialAdAlready() {
@@ -119,22 +115,23 @@ public class AdsUtil {
         }
         String interstitialID = (mAdsConfig.isDebug() ? AD_INTERSTITIAL_ID_DEV : mAdsConfig.getAD_INTERSTITIAL_ID());
         AdRequest adRequest = new AdRequest.Builder().build();
-        InterstitialAd.load(mContext, interstitialID, adRequest, new InterstitialAdLoadCallback() {
-            @Override
-            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                // The mInterstitialAd reference will be null until
-                // an ad is loaded.
-                mInterstitialAdAdmob = interstitialAd;
-                tryAgainstTime = 0;
-            }
+        RunUtil.runInBackground(() -> InterstitialAd.load(mContext, interstitialID, adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAdAdmob = interstitialAd;
+                        tryAgainstTime = 0;
+                    }
 
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                // Handle the error
-                mInterstitialAdAdmob = null;
-                if (tryAgainstTime++ < 2) createInterstitialAdmob();
-            }
-        });
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        mInterstitialAdAdmob = null;
+                        if (tryAgainstTime++ < 2) createInterstitialAdmob();
+                    }
+                }));
     }
 
     public void showInterstitialAd(FullScreenContentCallback fullScreenContentCallback) {
@@ -159,13 +156,11 @@ public class AdsUtil {
                         if (mCallBack != null) mCallBack.loadSuccess(nativeAd_);
                     })
                     .build();
-        adLoader.loadAds(new AdRequest.Builder().build(), 5);
+        RunUtil.runInBackground(() -> adLoader.loadAds(new AdRequest.Builder().build(), 5));
     }
-
     public NativeAd getNativeAd() {
         return this.nativeAd;
     }
-
     private NativeAdListener mCallBack;
 
     public interface NativeAdListener {
