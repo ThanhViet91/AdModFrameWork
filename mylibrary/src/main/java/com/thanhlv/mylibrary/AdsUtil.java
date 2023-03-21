@@ -77,7 +77,7 @@ public class AdsUtil {
                 isLoaded = true;
             }
         });
-        RunUtil.runInBackground(() -> adView.loadAd(adRequest));
+        RunUtil.runOnUI(() -> adView.loadAd(adRequest));
     }
 
     public void showBanner() {
@@ -115,7 +115,7 @@ public class AdsUtil {
         }
         String interstitialID = (mAdsConfig.isDebug() ? AD_INTERSTITIAL_ID_DEV : mAdsConfig.getAD_INTERSTITIAL_ID());
         AdRequest adRequest = new AdRequest.Builder().build();
-        RunUtil.runInBackground(() -> InterstitialAd.load(mContext, interstitialID, adRequest,
+        RunUtil.runOnUI(() -> InterstitialAd.load(mContext, interstitialID, adRequest,
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -156,7 +156,7 @@ public class AdsUtil {
                         if (mCallBack != null) mCallBack.loadSuccess(nativeAd_);
                     })
                     .build();
-        RunUtil.runInBackground(() -> adLoader.loadAds(new AdRequest.Builder().build(), 5));
+        RunUtil.runOnUI(() -> adLoader.loadAds(new AdRequest.Builder().build(), 5));
     }
     public NativeAd getNativeAd() {
         return this.nativeAd;
