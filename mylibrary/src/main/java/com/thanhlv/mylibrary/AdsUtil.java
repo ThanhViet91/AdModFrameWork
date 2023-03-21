@@ -113,7 +113,7 @@ public class AdsUtil {
 
     public void createInterstitialAdmob() {
         mInterstitialAdAdmob = null;
-        if (SharedPref.isProApp(mContext)) {
+        if (SharedPref.isProApp(mContext) || mAdsConfig == null) {
             mInterstitialAdAdmob = null;
             return;
         }
@@ -148,7 +148,7 @@ public class AdsUtil {
     private NativeAd nativeAd;
     private AdLoader adLoader;
     public void loadNativeAdmob() {
-        if (SharedPref.isProApp(mContext)) {
+        if (SharedPref.isProApp(mContext) || mAdsConfig == null) {
             nativeAd = null;
             return;
         }
