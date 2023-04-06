@@ -187,7 +187,7 @@ public class AdsUtil {
 //    }
     public NativeAdListener mCallBack;
 
-    interface NativeAdListener {
+    public interface NativeAdListener {
         void loadSuccess(NativeAd nativeAd);
     }
 
