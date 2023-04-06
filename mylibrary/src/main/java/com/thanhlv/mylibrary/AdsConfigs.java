@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 import com.google.android.gms.ads.AdSize;
 
 public class AdsConfigs {
-    private ViewGroup adViewBanner = null;
-    private AdSize adSize = AdSize.BANNER;
+//    private ViewGroup adViewBanner = null;
+//    private AdSize adSize = AdSize.BANNER;
     private String AD_OPEN_APP_ID1 = "";
     private String AD_OPEN_APP_ID2 = "";
     private String AD_OPEN_APP_ID3 = "";
@@ -21,21 +21,21 @@ public class AdsConfigs {
     private AdsConfigs() {
     }
 
-    public void setAdViewBanner(ViewGroup adViewBanner) {
-        this.adViewBanner = adViewBanner;
-    }
-
-    public void setAdSize(AdSize adSize) {
-        this.adSize = adSize;
-    }
-
-    public ViewGroup getAdViewBanner() {
-        return adViewBanner;
-    }
-
-    public AdSize getAdSize() {
-        return adSize;
-    }
+//    public void setAdViewBanner(ViewGroup adViewBanner) {
+//        this.adViewBanner = adViewBanner;
+//    }
+//
+//    public void setAdSize(AdSize adSize) {
+//        this.adSize = adSize;
+//    }
+//
+//    public ViewGroup getAdViewBanner() {
+//        return adViewBanner;
+//    }
+//
+//    public AdSize getAdSize() {
+//        return adSize;
+//    }
 
     public String getAD_OPEN_APP_ID1() {
         return AD_OPEN_APP_ID1;
@@ -75,7 +75,7 @@ public class AdsConfigs {
 
     public static class Builder {
         private ViewGroup adViewBanner = null;
-        private AdSize adSize = AdSize.BANNER;
+        private AdSize adSize = AdSize.FLUID;
         private String AD_OPEN_APP_ID1 = "";
         private String AD_OPEN_APP_ID2 = "";
         private String AD_OPEN_APP_ID3 = "";
@@ -146,8 +146,8 @@ public class AdsConfigs {
 
         public AdsConfigs build() {
             AdsConfigs adsConfigs = new AdsConfigs();
-            adsConfigs.adViewBanner = this.adViewBanner;
-            adsConfigs.adSize = this.adSize;
+//            adsConfigs.adViewBanner = this.adViewBanner;
+//            adsConfigs.adSize = this.adSize;
             adsConfigs.AD_OPEN_APP_ID1 = this.AD_OPEN_APP_ID1;
             adsConfigs.AD_OPEN_APP_ID2 = this.AD_OPEN_APP_ID2;
             adsConfigs.AD_OPEN_APP_ID3 = this.AD_OPEN_APP_ID3;

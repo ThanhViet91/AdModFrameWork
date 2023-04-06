@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
@@ -39,38 +40,49 @@ public class AdsUtil {
         this.mAdsConfig = mAdsConfig;
     }
 
-    public AdsUtil(Context context, AdsConfigs adsConfigs) {
-        if (context == null || adsConfigs == null) return;
-        this.mContext = context;
-        this.mAdsConfig = adsConfigs;
-        if (adsConfigs.getAdViewBanner() != null) initialAdViewBanner();
-    }
-    private Context mContext;
-
-    public void setContext (Context context) {
-        this.mContext = context;
+    public AdsUtil() {
+        initialAdViewBanner();
+        createInterstitialAdmob();
     }
 
-    private boolean isLoaded = false;
+    //    public AdsUtil(Context context, AdsConfigs adsConfigs) {
+//        if (context == null || adsConfigs == null) return;
+//        this.mContext = context;
+//        this.mAdsConfig = adsConfigs;
+//        if (adsConfigs.getAdViewBanner() != null) initialAdViewBanner();
+//    }
+    public Context mContext;
+
+//    public void setContext(Context context) {
+//        this.mContext = context;
+//    }
 
     @SuppressLint("StaticFieldLeak")
     private static AdsUtil instance;
 
     public AdView mAdView;
 
-    public static AdsUtil getInstance(Context context, AdsConfigs adsConfigs) {
-        if (instance == null) instance = new AdsUtil(context, adsConfigs);
+    public static AdsUtil getInstance() {
+        if (instance == null) instance = new AdsUtil();
         return instance;
     }
 
+//    public static AdsUtil getInstance(Context context, AdsConfigs adsConfigs) {
+//        if (instance == null) instance = new AdsUtil(context, adsConfigs);
+//        return instance;
+//    }
+
     // for BannerAd
     public void initialAdViewBanner() {
-        if (SharedPref.isProApp(mContext) || this.mAdsConfig == null || this.mAdsConfig.getAdViewBanner() == null) return;
+        if (SharedPref.isProApp(mContext) || this.mAdsConfig == null)
+            return;
         mAdView = new AdView(mContext);
 //        adView.setAdSize(mAdsConfig.getAdSize());
         mAdView.setAdSize(getAdSize());
         mAdView.setAdUnitId(mAdsConfig.isDebug() ? AD_BANNER_ID_DEV : mAdsConfig.getAD_BANNER_ID());
-        this.mAdsConfig.getAdViewBanner().addView(mAdView);
+        if (mAdView.getParent() != null) {
+            ((ViewGroup) mAdView.getParent()).removeView(mAdView);
+        }
         //requestAd
         AdRequest adRequest = new AdRequest.Builder().build();
         RunUtil.runOnUI(() -> mAdView.loadAd(adRequest));
@@ -91,16 +103,17 @@ public class AdsUtil {
             // Step 3 - Get adaptive ad size and return for setting on the ad view.
             return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(mContext, adWidth);
         } else {
-            return mAdsConfig.getAdSize();
+            return AdSize.FLUID;
         }
     }
 
-    public void showBanner() {
-        if (this.mAdsConfig == null || this.mAdsConfig.getAdViewBanner() == null) return;
+    public void showBanner(ViewGroup view) {
+        if (view == null || mAdView == null) return;
+        if (mAdView.getParent() == null) view.addView(mAdView);
         if (SharedPref.isProApp(mContext)) {
-            this.mAdsConfig.getAdViewBanner().setVisibility(View.GONE);
+            view.setVisibility(View.GONE);
         } else
-            this.mAdsConfig.getAdViewBanner().setVisibility(View.VISIBLE);
+            view.setVisibility(View.VISIBLE);
     }
 
     // for Interstitial
@@ -123,11 +136,11 @@ public class AdsUtil {
     private int tryAgainstTime = 0;
 
     public void createInterstitialAdmob() {
-        mInterstitialAdAdmob = null;
         if (SharedPref.isProApp(mContext) || this.mAdsConfig == null) {
             mInterstitialAdAdmob = null;
             return;
         }
+        if (mInterstitialAdAdmob != null) return;
         String interstitialID = (mAdsConfig.isDebug() ? AD_INTERSTITIAL_ID_DEV : mAdsConfig.getAD_INTERSTITIAL_ID());
         AdRequest adRequest = new AdRequest.Builder().build();
         RunUtil.runOnUI(() -> InterstitialAd.load(mContext, interstitialID, adRequest,
@@ -168,19 +181,21 @@ public class AdsUtil {
             adLoader = new AdLoader.Builder(mContext, mAdsConfig.isDebug() ? AD_NATIVE_ID_DEV : mAdsConfig.getAD_NATIVE_ID())
                     .forNativeAd(nativeAd_ -> {
                         nativeAd = nativeAd_;
-                        if (mCallBack != null) mCallBack.loadSuccess(nativeAd_);
+                        if (nativeAdListener != null) nativeAdListener.loadSuccess(nativeAd_);
                     })
                     .build();
-        RunUtil.runOnUI(() -> adLoader.loadAds(new AdRequest.Builder().build(), 5));
+        RunUtil.runOnUI(() -> {
+            if (adLoader != null) adLoader.loadAds(new AdRequest.Builder().build(), 5);
+        });
     }
-    public NativeAdListener mCallBack;
+    public NativeAdListener nativeAdListener;
 
     public interface NativeAdListener {
         void loadSuccess(NativeAd nativeAd);
     }
 
-    public void setNativeAdCallBack(NativeAdListener callBack) {
-        this.mCallBack = callBack;
-    }
+//    public void setNativeAdCallBack(NativeAdListener callBack) {
+//        this.mCallBack = callBack;
+//    }
 
 }
