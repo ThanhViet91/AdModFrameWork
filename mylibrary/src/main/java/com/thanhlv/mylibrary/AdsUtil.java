@@ -3,6 +3,8 @@ package com.thanhlv.mylibrary;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -10,6 +12,7 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
@@ -64,7 +67,8 @@ public class AdsUtil {
         if (SharedPref.isProApp(mContext) || this.mAdsConfig == null || this.mAdsConfig.getAdViewBanner() == null) return;
         if (isLoaded) return;
         AdView adView = new AdView(mContext);
-        adView.setAdSize(mAdsConfig.getAdSize());
+//        adView.setAdSize(mAdsConfig.getAdSize());
+        adView.setAdSize(getAdSize());
         adView.setAdUnitId(mAdsConfig.isDebug() ? AD_BANNER_ID_DEV : mAdsConfig.getAD_BANNER_ID());
         this.mAdsConfig.getAdViewBanner().addView(adView);
 
@@ -78,6 +82,25 @@ public class AdsUtil {
             }
         });
         RunUtil.runOnUI(() -> adView.loadAd(adRequest));
+    }
+
+    private AdSize getAdSize() {
+        // Step 2 - Determine the screen width (less decorations) to use for the ad width.
+        if (mContext instanceof Activity)  {
+            Display display = ((Activity) mContext).getWindowManager().getDefaultDisplay();
+            DisplayMetrics outMetrics = new DisplayMetrics();
+            display.getMetrics(outMetrics);
+
+            float widthPixels = outMetrics.widthPixels;
+            float density = outMetrics.density;
+
+            int adWidth = (int) (widthPixels / density);
+
+            // Step 3 - Get adaptive ad size and return for setting on the ad view.
+            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(mContext, adWidth);
+        } else {
+            return mAdsConfig.getAdSize();
+        }
     }
 
     public void showBanner() {

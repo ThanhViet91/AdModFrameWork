@@ -38,7 +38,7 @@ public class BaseApplication extends Application
     public AppOpenAdManager appOpenAdManager;
     private Activity currentActivity;
     private final String TAG = "BaseApplication";
-    public final String CHANNEL_ID = "com.thanhlv.baseapplication";
+    public String CHANNEL_ID = "com.thanhlv.baseapplication";
     private static Application context;
 
     public static Application getAppContext() {
