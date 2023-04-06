@@ -9,7 +9,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -72,16 +71,8 @@ public class AdsUtil {
         mAdView.setAdSize(getAdSize());
         mAdView.setAdUnitId(mAdsConfig.isDebug() ? AD_BANNER_ID_DEV : mAdsConfig.getAD_BANNER_ID());
         this.mAdsConfig.getAdViewBanner().addView(mAdView);
-        if (isLoaded) return;
         //requestAd
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                isLoaded = true;
-            }
-        });
         RunUtil.runOnUI(() -> mAdView.loadAd(adRequest));
     }
 
@@ -182,9 +173,6 @@ public class AdsUtil {
                     .build();
         RunUtil.runOnUI(() -> adLoader.loadAds(new AdRequest.Builder().build(), 5));
     }
-//    public NativeAd getNativeAd() {
-//        return this.nativeAd;
-//    }
     public NativeAdListener mCallBack;
 
     public interface NativeAdListener {
