@@ -41,8 +41,6 @@ public class AdsUtil {
     }
 
     public AdsUtil() {
-        initialAdViewBanner();
-        createInterstitialAdmob();
     }
 
     //    public AdsUtil(Context context, AdsConfigs adsConfigs) {
@@ -51,7 +49,13 @@ public class AdsUtil {
 //        this.mAdsConfig = adsConfigs;
 //        if (adsConfigs.getAdViewBanner() != null) initialAdViewBanner();
 //    }
-    public Context mContext;
+    private Context mContext;
+
+    public void setContext(Context context) {
+        this.mContext = context;
+        initialAdViewBanner();
+        createInterstitialAdmob();
+    }
 
 //    public void setContext(Context context) {
 //        this.mContext = context;
@@ -74,7 +78,7 @@ public class AdsUtil {
 
     // for BannerAd
     public void initialAdViewBanner() {
-        if (SharedPref.isProApp(mContext) || this.mAdsConfig == null)
+        if (mContext == null || SharedPref.isProApp(mContext) || this.mAdsConfig == null)
             return;
         mAdView = new AdView(mContext);
 //        adView.setAdSize(mAdsConfig.getAdSize());
@@ -90,7 +94,7 @@ public class AdsUtil {
 
     private AdSize getAdSize() {
         // Step 2 - Determine the screen width (less decorations) to use for the ad width.
-        if (mContext instanceof Activity)  {
+        if (mContext != null && mContext instanceof Activity) {
             Display display = ((Activity) mContext).getWindowManager().getDefaultDisplay();
             DisplayMetrics outMetrics = new DisplayMetrics();
             display.getMetrics(outMetrics);
@@ -108,7 +112,7 @@ public class AdsUtil {
     }
 
     public void showBanner(ViewGroup view) {
-        if (view == null || mAdView == null) return;
+        if (mContext == null || view == null || mAdView == null) return;
         if (mAdView.getParent() == null) view.addView(mAdView);
         if (SharedPref.isProApp(mContext)) {
             view.setVisibility(View.GONE);
@@ -120,7 +124,8 @@ public class AdsUtil {
     public InterstitialAd mInterstitialAdAdmob = null;
 
     public boolean interstitialAdAlready() {
-        return !SharedPref.isProApp(mContext)
+        return mContext != null
+                && !SharedPref.isProApp(mContext)
                 && this.mInterstitialAdAdmob != null
                 && checkInterstitialAlready();
     }
@@ -136,7 +141,7 @@ public class AdsUtil {
     private int tryAgainstTime = 0;
 
     public void createInterstitialAdmob() {
-        if (SharedPref.isProApp(mContext) || this.mAdsConfig == null) {
+        if (mContext == null || SharedPref.isProApp(mContext) || this.mAdsConfig == null) {
             mInterstitialAdAdmob = null;
             return;
         }
@@ -163,7 +168,8 @@ public class AdsUtil {
     }
 
     public void showInterstitialAd(FullScreenContentCallback fullScreenContentCallback) {
-        if (mInterstitialAdAdmob != null) {
+        if (mInterstitialAdAdmob != null
+                && mContext != null && mContext instanceof Activity) {
             mInterstitialAdAdmob.show((Activity) mContext);
             mInterstitialAdAdmob.setFullScreenContentCallback(fullScreenContentCallback);
         }
@@ -173,7 +179,7 @@ public class AdsUtil {
     public NativeAd nativeAd;
     private AdLoader adLoader;
     public void loadNativeAdmob() {
-        if (SharedPref.isProApp(mContext) || this.mAdsConfig == null) {
+        if (mContext == null || SharedPref.isProApp(mContext) || this.mAdsConfig == null) {
             nativeAd = null;
             return;
         }
