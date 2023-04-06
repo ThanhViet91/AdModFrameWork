@@ -65,13 +65,12 @@ public class AdsUtil {
     // for BannerAd
     public void initialAdViewBanner() {
         if (SharedPref.isProApp(mContext) || this.mAdsConfig == null || this.mAdsConfig.getAdViewBanner() == null) return;
-        if (isLoaded) return;
         AdView adView = new AdView(mContext);
 //        adView.setAdSize(mAdsConfig.getAdSize());
         adView.setAdSize(getAdSize());
         adView.setAdUnitId(mAdsConfig.isDebug() ? AD_BANNER_ID_DEV : mAdsConfig.getAD_BANNER_ID());
         this.mAdsConfig.getAdViewBanner().addView(adView);
-
+        if (isLoaded) return;
         //requestAd
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.setAdListener(new AdListener() {
