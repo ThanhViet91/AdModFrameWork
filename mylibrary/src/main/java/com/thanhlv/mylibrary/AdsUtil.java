@@ -57,6 +57,8 @@ public class AdsUtil {
     @SuppressLint("StaticFieldLeak")
     private static AdsUtil instance;
 
+    public AdView mAdView;
+
     public static AdsUtil getInstance(Context context, AdsConfigs adsConfigs) {
         if (instance == null) instance = new AdsUtil(context, adsConfigs);
         return instance;
@@ -65,22 +67,22 @@ public class AdsUtil {
     // for BannerAd
     public void initialAdViewBanner() {
         if (SharedPref.isProApp(mContext) || this.mAdsConfig == null || this.mAdsConfig.getAdViewBanner() == null) return;
-        AdView adView = new AdView(mContext);
+        mAdView = new AdView(mContext);
 //        adView.setAdSize(mAdsConfig.getAdSize());
-        adView.setAdSize(getAdSize());
-        adView.setAdUnitId(mAdsConfig.isDebug() ? AD_BANNER_ID_DEV : mAdsConfig.getAD_BANNER_ID());
-        this.mAdsConfig.getAdViewBanner().addView(adView);
+        mAdView.setAdSize(getAdSize());
+        mAdView.setAdUnitId(mAdsConfig.isDebug() ? AD_BANNER_ID_DEV : mAdsConfig.getAD_BANNER_ID());
+        this.mAdsConfig.getAdViewBanner().addView(mAdView);
         if (isLoaded) return;
         //requestAd
         AdRequest adRequest = new AdRequest.Builder().build();
-        adView.setAdListener(new AdListener() {
+        mAdView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
                 isLoaded = true;
             }
         });
-        RunUtil.runOnUI(() -> adView.loadAd(adRequest));
+        RunUtil.runOnUI(() -> mAdView.loadAd(adRequest));
     }
 
     private AdSize getAdSize() {
@@ -164,7 +166,7 @@ public class AdsUtil {
     }
 
     // for NativeAd
-    private NativeAd nativeAd;
+    public NativeAd nativeAd;
     private AdLoader adLoader;
     public void loadNativeAdmob() {
         if (SharedPref.isProApp(mContext) || this.mAdsConfig == null) {
@@ -180,12 +182,12 @@ public class AdsUtil {
                     .build();
         RunUtil.runOnUI(() -> adLoader.loadAds(new AdRequest.Builder().build(), 5));
     }
-    public NativeAd getNativeAd() {
-        return this.nativeAd;
-    }
-    private NativeAdListener mCallBack;
+//    public NativeAd getNativeAd() {
+//        return this.nativeAd;
+//    }
+    public NativeAdListener mCallBack;
 
-    public interface NativeAdListener {
+    interface NativeAdListener {
         void loadSuccess(NativeAd nativeAd);
     }
 
