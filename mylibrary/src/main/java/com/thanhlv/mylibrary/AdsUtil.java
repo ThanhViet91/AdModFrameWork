@@ -1,4 +1,4 @@
-package com.thanhlv.library;
+package com.thanhlv.mylibrary;
 
 import static com.google.android.gms.ads.nativead.NativeAdOptions.ADCHOICES_TOP_RIGHT;
 

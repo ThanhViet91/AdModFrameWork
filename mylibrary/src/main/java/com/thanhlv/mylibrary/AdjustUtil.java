@@ -1,4 +1,4 @@
-package com.thanhlv.library;
+package com.thanhlv.mylibrary;
 
 import com.adjust.sdk.Adjust;
 import com.adjust.sdk.AdjustAdRevenue;

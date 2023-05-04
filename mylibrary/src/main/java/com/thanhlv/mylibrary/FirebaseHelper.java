@@ -1,4 +1,4 @@
-package com.thanhlv.library;
+package com.thanhlv.mylibrary;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

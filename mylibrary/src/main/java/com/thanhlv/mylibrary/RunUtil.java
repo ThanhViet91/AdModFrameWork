@@ -1,4 +1,4 @@
-package com.thanhlv.library;
+package com.thanhlv.mylibrary;
 
 import android.os.Handler;
 import android.os.Looper;
