@@ -3,6 +3,7 @@ package com.thanhlv.mylibrary;
 import com.adjust.sdk.Adjust;
 import com.adjust.sdk.AdjustAdRevenue;
 import com.adjust.sdk.AdjustConfig;
+import com.adjust.sdk.AdjustEvent;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.AdapterResponseInfo;
 import com.google.android.gms.ads.appopen.AppOpenAd;
@@ -22,7 +23,6 @@ public class AdjustUtil {
             if (loadedAdapterResponseInfo != null)
                 adRevenue.setAdRevenueNetwork(loadedAdapterResponseInfo.getAdSourceName());
             Adjust.trackAdRevenue(adRevenue);
-            System.out.println("thanhlv trackingRevenueAdjust " + ad + " --- value = " + adValue.getValueMicros() + " (unit: " + adValue.getCurrencyCode()+ ")");
         });
     }
 
@@ -35,8 +35,6 @@ public class AdjustUtil {
             if (loadedAdapterResponseInfo != null)
                 adRevenue.setAdRevenueNetwork(loadedAdapterResponseInfo.getAdSourceName());
             Adjust.trackAdRevenue(adRevenue);
-            System.out.println("thanhlv trackingRevenueAdjust " + ad + " --- value = " + adValue.getValueMicros() + " (unit: " + adValue.getCurrencyCode()+ ")");
-
         });
     }
 
@@ -49,8 +47,6 @@ public class AdjustUtil {
             if (loadedAdapterResponseInfo != null)
                 adRevenue.setAdRevenueNetwork(loadedAdapterResponseInfo.getAdSourceName());
             Adjust.trackAdRevenue(adRevenue);
-            System.out.println("thanhlv trackingRevenueAdjust " + ad + " --- value = " + adValue.getValueMicros() + " (unit: " + adValue.getCurrencyCode()+ ")");
-
         });
     }
 
@@ -63,8 +59,6 @@ public class AdjustUtil {
             if (loadedAdapterResponseInfo != null)
                 adRevenue.setAdRevenueNetwork(loadedAdapterResponseInfo.getAdSourceName());
             Adjust.trackAdRevenue(adRevenue);
-            System.out.println("thanhlv trackingRevenueAdjust " + ad + " --- value = " + adValue.getValueMicros() + " (unit: " + adValue.getCurrencyCode()+ ")");
-
         });
     }
 }
