@@ -37,4 +37,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:21.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.errorprone:error_prone_annotations:2.16'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 }

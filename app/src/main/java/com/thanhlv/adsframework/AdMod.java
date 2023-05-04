@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.thanhlv.mylibrary.AdsConfigs;
-
 public class AdMod extends AppCompatActivity {
 
     @Override

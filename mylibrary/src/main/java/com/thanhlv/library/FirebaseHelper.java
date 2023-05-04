@@ -1,4 +1,4 @@
-package com.thanhlv.mylibrary;
+package com.thanhlv.library;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -41,7 +41,6 @@ public class FirebaseHelper {
             Bundle bundle = new Bundle();
             bundle.putString("action", "click");
             mFirebaseAnalytics.logEvent(event, bundle);
-            System.out.println(TAG + " thanhlv >>> logEvent onclick " + event);
         }
     }
 }
