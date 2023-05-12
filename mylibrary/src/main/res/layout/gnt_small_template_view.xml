@@ -8,7 +8,7 @@
       android:id="@+id/native_ad_view"
       android:layout_width="match_parent"
       android:layout_height="145dp"
-      android:background="@drawable/gnt_outline_shape_top_round">
+      android:background="@drawable/gnt_outline_shape">
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view"
         android:layout_width="match_parent"
