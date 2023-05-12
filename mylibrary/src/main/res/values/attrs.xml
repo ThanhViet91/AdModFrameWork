@@ -1,7 +1,12 @@
 <resources>
 
 
-  <declare-styleable name="TemplateView">
-    <attr name="gnt_template_type" format="reference"/>
+  <declare-styleable name="NativeAdView">
+    <attr name="native_type" format="reference"/>
+  </declare-styleable>
+
+
+  <declare-styleable name="BannerAdView">
+    <attr name="banner_type" format="reference"/>
   </declare-styleable>
 </resources>

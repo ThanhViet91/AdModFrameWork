@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.thanhlv.mylibrary;
+package com.thanhlv.mylibrary.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -33,17 +33,18 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.ads.nativead.AdChoicesView;
 import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;
-import com.google.android.gms.ads.nativead.NativeAdView;
+import com.thanhlv.mylibrary.R;
 
 /**
  * Base class for a template view. *
  */
-public class TemplateView extends FrameLayout {
+public class NativeAdView extends FrameLayout {
 
-  private NativeTemplateStyle styles;
+//  private NativeTemplateStyle styles;
   private NativeAd nativeAd;
-  private NativeAdView nativeAdView;
+  private com.google.android.gms.ads.nativead.NativeAdView nativeAdView;
   private TextView primaryView;
+  private TextView secondaryView;
   private TextView tertiaryView;
   private ImageView iconView;
   private MediaView mediaView;
@@ -52,85 +53,85 @@ public class TemplateView extends FrameLayout {
   private ConstraintLayout background;
 
 
-  public TemplateView(Context context) {
+  public NativeAdView(Context context) {
     super(context);
   }
 
-  public TemplateView(Context context, @Nullable AttributeSet attrs) {
+  public NativeAdView(Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
     initView(context, attrs);
   }
 
-  public TemplateView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+  public NativeAdView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     initView(context, attrs);
   }
 
-  public TemplateView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+  public NativeAdView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
     initView(context, attrs);
   }
 
-  public void setStyles(NativeTemplateStyle styles) {
-    this.styles = styles;
-    this.applyStyles();
-  }
-
-  private void applyStyles() {
-    Drawable mainBackground = styles.getMainBackgroundColor();
-    if (mainBackground != null) {
-      background.setBackground(mainBackground);
-      if (primaryView != null) primaryView.setBackground(mainBackground);
-      if (tertiaryView != null) tertiaryView.setBackground(mainBackground);
-    }
-
-    Typeface primary = styles.getPrimaryTextTypeface();
-    if (primary != null && primaryView != null) primaryView.setTypeface(primary);
-
-    Typeface tertiary = styles.getTertiaryTextTypeface();
-    if (tertiary != null && tertiaryView != null) tertiaryView.setTypeface(tertiary);
-
-
-    Typeface ctaTypeface = styles.getCallToActionTextTypeface();
-    if (ctaTypeface != null && callToActionView != null)
-      callToActionView.setTypeface(ctaTypeface);
-
-    if (styles.getPrimaryTextTypefaceColor() != null && primaryView != null)
-      primaryView.setTextColor(styles.getPrimaryTextTypefaceColor());
-
-    if (styles.getTertiaryTextTypefaceColor() != null && tertiaryView != null)
-      tertiaryView.setTextColor(styles.getTertiaryTextTypefaceColor());
-
-    if (styles.getCallToActionTypefaceColor() != null && callToActionView != null)
-      callToActionView.setTextColor(styles.getCallToActionTypefaceColor());
-
-    float ctaTextSize = styles.getCallToActionTextSize();
-    if (ctaTextSize > 0 && callToActionView != null)
-      callToActionView.setTextSize(ctaTextSize);
-
-    float primaryTextSize = styles.getPrimaryTextSize();
-    if (primaryTextSize > 0 && primaryView != null)
-      primaryView.setTextSize(primaryTextSize);
-
-    float tertiaryTextSize = styles.getTertiaryTextSize();
-    if (tertiaryTextSize > 0 && tertiaryView != null)
-      tertiaryView.setTextSize(tertiaryTextSize);
-
-    Drawable ctaBackground = styles.getCallToActionBackgroundColor();
-    if (ctaBackground != null && callToActionView != null)
-      callToActionView.setBackground(ctaBackground);
-
-    Drawable primaryBackground = styles.getPrimaryTextBackgroundColor();
-    if (primaryBackground != null && primaryView != null)
-      primaryView.setBackground(primaryBackground);
-
-    Drawable tertiaryBackground = styles.getTertiaryTextBackgroundColor();
-    if (tertiaryBackground != null && tertiaryView != null)
-      tertiaryView.setBackground(tertiaryBackground);
-
-    invalidate();
-    requestLayout();
-  }
+//  public void setStyles(NativeTemplateStyle styles) {
+//    this.styles = styles;
+//    this.applyStyles();
+//  }
+//
+//  private void applyStyles() {
+//    Drawable mainBackground = styles.getMainBackgroundColor();
+//    if (mainBackground != null) {
+//      background.setBackground(mainBackground);
+//      if (primaryView != null) primaryView.setBackground(mainBackground);
+//      if (tertiaryView != null) tertiaryView.setBackground(mainBackground);
+//    }
+//
+//    Typeface primary = styles.getPrimaryTextTypeface();
+//    if (primary != null && primaryView != null) primaryView.setTypeface(primary);
+//
+//    Typeface tertiary = styles.getTertiaryTextTypeface();
+//    if (tertiary != null && tertiaryView != null) tertiaryView.setTypeface(tertiary);
+//
+//
+//    Typeface ctaTypeface = styles.getCallToActionTextTypeface();
+//    if (ctaTypeface != null && callToActionView != null)
+//      callToActionView.setTypeface(ctaTypeface);
+//
+//    if (styles.getPrimaryTextTypefaceColor() != null && primaryView != null)
+//      primaryView.setTextColor(styles.getPrimaryTextTypefaceColor());
+//
+//    if (styles.getTertiaryTextTypefaceColor() != null && tertiaryView != null)
+//      tertiaryView.setTextColor(styles.getTertiaryTextTypefaceColor());
+//
+//    if (styles.getCallToActionTypefaceColor() != null && callToActionView != null)
+//      callToActionView.setTextColor(styles.getCallToActionTypefaceColor());
+//
+//    float ctaTextSize = styles.getCallToActionTextSize();
+//    if (ctaTextSize > 0 && callToActionView != null)
+//      callToActionView.setTextSize(ctaTextSize);
+//
+//    float primaryTextSize = styles.getPrimaryTextSize();
+//    if (primaryTextSize > 0 && primaryView != null)
+//      primaryView.setTextSize(primaryTextSize);
+//
+//    float tertiaryTextSize = styles.getTertiaryTextSize();
+//    if (tertiaryTextSize > 0 && tertiaryView != null)
+//      tertiaryView.setTextSize(tertiaryTextSize);
+//
+//    Drawable ctaBackground = styles.getCallToActionBackgroundColor();
+//    if (ctaBackground != null && callToActionView != null)
+//      callToActionView.setBackground(ctaBackground);
+//
+//    Drawable primaryBackground = styles.getPrimaryTextBackgroundColor();
+//    if (primaryBackground != null && primaryView != null)
+//      primaryView.setBackground(primaryBackground);
+//
+//    Drawable tertiaryBackground = styles.getTertiaryTextBackgroundColor();
+//    if (tertiaryBackground != null && tertiaryView != null)
+//      tertiaryView.setBackground(tertiaryBackground);
+//
+//    invalidate();
+//    requestLayout();
+//  }
 
   public NativeAd getNativeAd(){
     return this.nativeAd;
@@ -140,6 +141,8 @@ public class TemplateView extends FrameLayout {
     String headline = nativeAd.getHeadline();
     String body = nativeAd.getBody();
     String cta = nativeAd.getCallToAction();
+    String advertiser = nativeAd.getAdvertiser();
+    String store = nativeAd.getStore();
     NativeAd.Image icon = nativeAd.getIcon();
 
     if (!TextUtils.isEmpty(headline) && headline.length() > 25) {
@@ -177,6 +180,17 @@ public class TemplateView extends FrameLayout {
     nativeAdView.setMediaView(mediaView);
     primaryView.setText(headline);
     callToActionView.setText(cta);
+
+    String secondaryText = "";
+    if (!TextUtils.isEmpty(store) && TextUtils.isEmpty(advertiser)) {
+      nativeAdView.setStoreView(secondaryView);
+      secondaryText = store;
+    } else if (!TextUtils.isEmpty(advertiser)) {
+      nativeAdView.setAdvertiserView(secondaryView);
+      secondaryText = advertiser;
+    }
+    secondaryView.setText(secondaryText);
+
     if (icon != null) {
       iconView.setVisibility(VISIBLE);
       iconView.setImageDrawable(icon.getDrawable());
@@ -188,9 +202,9 @@ public class TemplateView extends FrameLayout {
       nativeAdView.setBodyView(tertiaryView);
     }
     nativeAdView.setNativeAd(nativeAd);
+    background.setVisibility(VISIBLE);
     shimmer.stopShimmer();
     shimmer.setVisibility(GONE);
-    background.setVisibility(VISIBLE);
   }
 
   /**
@@ -207,10 +221,10 @@ public class TemplateView extends FrameLayout {
 
   private void initView(Context context, AttributeSet attributeSet) {
 
-    TypedArray attributes = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.TemplateView, 0, 0);
+    TypedArray attributes = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.NativeAdView, 0, 0);
     int templateType;
     try {
-      templateType = attributes.getResourceId(R.styleable.TemplateView_gnt_template_type, R.layout.gnt_medium_3_template_view);
+      templateType = attributes.getResourceId(R.styleable.NativeAdView_native_type, R.layout.native_medium_2);
     } finally {
       attributes.recycle();
     }
@@ -232,7 +246,7 @@ public class TemplateView extends FrameLayout {
     nativeAdView = findViewById(R.id.native_ad_view);
     primaryView = findViewById(R.id.primary);
     tertiaryView = findViewById(R.id.body);
-
+    secondaryView = findViewById(R.id.secondary);
     callToActionView = findViewById(R.id.cta);
     iconView = findViewById(R.id.icon);
     mediaView = findViewById(R.id.media_view);

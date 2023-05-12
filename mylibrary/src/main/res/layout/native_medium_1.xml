@@ -152,6 +152,20 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/secondary"
+                    android:visibility="gone"
+                    android:textColor="@color/gnt_white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/primary"
+                    android:layout_marginStart="10dp"
+                    android:textSize="@dimen/gnt_text_size_small"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="@dimen/gnt_margin_right_parent"
+                    android:layout_toEndOf="@id/icon"
+                    tools:ignore="RtlSymmetry" />
+
+                <TextView
                     android:id="@+id/body"
                     android:textColor="@color/gnt_white"
                     android:layout_width="match_parent"
