@@ -3,7 +3,10 @@ package com.thanhlv.mylibrary;
 import static com.google.android.gms.ads.nativead.NativeAdOptions.ADCHOICES_TOP_RIGHT;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,6 +18,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -30,10 +34,9 @@ import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.thanhlv.mylibrary.view.BannerAdView;
 import com.thanhlv.mylibrary.view.DialogLoadingFullScreen;
 import com.thanhlv.mylibrary.view.NativeAdView;
-//import com.thanhlv.mylibrary.view.NativeTemplateStyle;
 
-public class AdsUtil {
-    public static final String TAG = AdsUtil.class.getSimpleName();
+public class AdsManager {
+    public static final String TAG = AdsManager.class.getSimpleName();
     public static final String AD_BANNER_ID_DEV = "ca-app-pub-3940256099942544/6300978111";
     public static final String AD_NATIVE_ID_DEV = "ca-app-pub-3940256099942544/2247696110";
     public static final String AD_INTERSTITIAL_ID_DEV = "ca-app-pub-3940256099942544/1033173712";
@@ -45,26 +48,37 @@ public class AdsUtil {
     // for BannerAd
     public static void createBanner(Context context, String id, BannerAdView containerAdView) {
         if (context == null || containerAdView == null) return;
-        MobileAds.initialize(context, initializationStatus -> System.out.println("thanhlv - " + TAG + ": createBanner " + id));
-        containerAdView.toggleLoadingView(true);
-        AdView mAdView = new AdView(context);
-        mAdView.setAdUnitId(id.isEmpty() ? AD_BANNER_ID_DEV : id);
-        mAdView.setAdSize(getAdSize(context));
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                new Handler().postDelayed(() -> containerAdView.toggleLoadingView(false), 150);
-                AdjustUtil.trackingRevenueAdjust(mAdView);
+        if (!isNetworkAvailable(context)) {
+            containerAdView.setVisibility(View.GONE);
+        } else {
+            containerAdView.setVisibility(View.VISIBLE);
+            ShimmerFrameLayout shimmerFrameLayout = ((Activity)context).findViewById(R.id.loading_view);
+            if (shimmerFrameLayout.getParent() != null) {
+                ((ViewGroup) shimmerFrameLayout.getParent()).removeView(shimmerFrameLayout);
             }
-        });
-        if (mAdView.getParent() != null) {
-            ((ViewGroup) mAdView.getParent()).removeView(mAdView);
+            containerAdView.removeAllViews();
+            containerAdView.addView(shimmerFrameLayout);
+            containerAdView.toggleLoadingView(true);
+            AdView mAdView = new AdView(context);
+            mAdView.setAdUnitId(id.isEmpty() ? AD_BANNER_ID_DEV : id);
+            mAdView.setAdSize(getAdSize(context));
+            mAdView.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    super.onAdLoaded();
+                    new Handler().postDelayed(() -> containerAdView.toggleLoadingView(false), 150);
+                    AdjustUtil.trackingRevenueAdjust(mAdView);
+                }
+            });
+            if (mAdView.getParent() != null) {
+                ((ViewGroup) mAdView.getParent()).removeView(mAdView);
+            }
+            if (mAdView.getParent() == null) containerAdView.addView(mAdView);
+            //requestAd
+            AdRequest adRequest = new AdRequest.Builder().build();
+            runOnUI(() -> mAdView.loadAd(adRequest));
         }
-        if (mAdView.getParent() == null) containerAdView.addView(mAdView);
-        //requestAd
-        AdRequest adRequest = new AdRequest.Builder().build();
-        runOnUI(() -> mAdView.loadAd(adRequest));
+
     }
 
     public static AdSize getAdSize(Context context) {
@@ -211,6 +225,30 @@ public class AdsUtil {
         }
 
     }
+
+    public static void registerReceiver(Context context, AdsManager.ConnectivityCallBack callBack) {
+        if (context == null) return;
+        context.registerReceiver(mReceiver, mIntentFilter);
+        mConnectivityCallBack = callBack;
+    }
+
+    public static void unregisterReceiver(Context context) {
+        context.unregisterReceiver(mReceiver);
+    }
+
+    public interface ConnectivityCallBack {
+        void onReceive(Context context);
+    }
+
+    private static AdsManager.ConnectivityCallBack mConnectivityCallBack;
+    private static final IntentFilter mIntentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+    private static final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (mConnectivityCallBack != null) mConnectivityCallBack.onReceive(context);
+        }
+    };
 
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));

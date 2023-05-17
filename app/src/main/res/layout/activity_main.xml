@@ -14,8 +14,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <com.thanhlv.mylibrary.view.NativeAdView
-        android:layout_alignParentBottom="true"
+    <com.thanhlv.mylibrary.view.BannerAdView
+        android:layout_centerVertical="true"
         android:id="@+id/banner"
         app:native_type="@layout/native_small_1"
         android:layout_width="match_parent"

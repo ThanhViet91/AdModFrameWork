@@ -29,7 +29,6 @@ public class BannerAdView extends RelativeLayout {
         initView(context, attrs);
     }
 
-
     private void initView(Context context, AttributeSet attributeSet) {
 
         TypedArray attributes = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.BannerAdView, 0, 0);
