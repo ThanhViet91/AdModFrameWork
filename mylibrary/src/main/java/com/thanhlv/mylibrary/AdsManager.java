@@ -45,19 +45,37 @@ public class AdsManager {
         MobileAds.initialize(context, initializationStatus -> System.out.println("thanhlv - " + TAG + ": onInitializationComplete"));
     }
 
+
+    static boolean isBannerAlready = false;
     // for BannerAd
     public static void createBanner(Context context, String id, BannerAdView containerAdView) {
         if (context == null || containerAdView == null) return;
         if (!isNetworkAvailable(context)) {
+            for (int i = 0; i < containerAdView.getChildCount(); i++) {
+                View child = containerAdView.getChildAt(i);
+                if (child instanceof AdView) {
+                    containerAdView.removeView(child);
+                    break;
+                }
+            }
             containerAdView.setVisibility(View.GONE);
         } else {
             containerAdView.setVisibility(View.VISIBLE);
-            ShimmerFrameLayout shimmerFrameLayout = ((Activity)context).findViewById(R.id.loading_view);
-            if (shimmerFrameLayout.getParent() != null) {
-                ((ViewGroup) shimmerFrameLayout.getParent()).removeView(shimmerFrameLayout);
+            isBannerAlready = false;
+            for (int i = 0; i < containerAdView.getChildCount(); i++) {
+                View child = containerAdView.getChildAt(i);
+                if (child instanceof AdView) {
+                    isBannerAlready = true;
+                    break;
+                }
             }
-            containerAdView.removeAllViews();
-            containerAdView.addView(shimmerFrameLayout);
+            if (isBannerAlready) return;
+//            ShimmerFrameLayout shimmerFrameLayout = ((Activity)context).findViewById(R.id.loading_view);
+//            if (shimmerFrameLayout.getParent() != null) {
+//                ((ViewGroup) shimmerFrameLayout.getParent()).removeView(shimmerFrameLayout);
+//            }
+//            containerAdView.removeAllViews();
+//            containerAdView.addView(shimmerFrameLayout);
             containerAdView.toggleLoadingView(true);
             AdView mAdView = new AdView(context);
             mAdView.setAdUnitId(id.isEmpty() ? AD_BANNER_ID_DEV : id);
@@ -66,6 +84,7 @@ public class AdsManager {
                 @Override
                 public void onAdLoaded() {
                     super.onAdLoaded();
+                    isBannerAlready = false;
                     new Handler().postDelayed(() -> containerAdView.toggleLoadingView(false), 150);
                     AdjustUtil.trackingRevenueAdjust(mAdView);
                 }
@@ -168,6 +187,7 @@ public class AdsManager {
                 public void onAdDismissedFullScreenContent() {
                     super.onAdDismissedFullScreenContent();
                     if (!loadingFullScreen.isDetached()) loadingFullScreen.dismissAllowingStateLoss();
+                    mInterAd = null;
                     if (mShowInterAdCallback != null)
                         mShowInterAdCallback.onNextActivity(true);
                 }
@@ -175,6 +195,7 @@ public class AdsManager {
                 @Override
                 public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                     super.onAdFailedToShowFullScreenContent(adError);
+                    mInterAd = null;
                     if (!loadingFullScreen.isDetached()) loadingFullScreen.dismissAllowingStateLoss();
                     if (mShowInterAdCallback != null)
                         mShowInterAdCallback.onNextActivity(true);
