@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.ads.AdError;
@@ -143,6 +143,7 @@ public class AdsManager {
 
     public interface ShowInterAdCallback {
         void onNextActivity(boolean clickDismiss);
+        void onShowedFull();
     }
 
     private static ShowInterAdCallback mShowInterAdCallback;
@@ -150,10 +151,12 @@ public class AdsManager {
     private static DialogLoadingFullScreen loadingFullScreen;
 
     public static void showInterstitialAd(Context context, ShowInterAdCallback showInterAdCallback) {
+        if (context == null) return;
         mShowInterAdCallback = showInterAdCallback;
         if (context instanceof Activity && mInterAd != null) {
             loadingFullScreen = new DialogLoadingFullScreen();
-            loadingFullScreen.show(((FragmentActivity) context).getSupportFragmentManager(), "");
+            if (!loadingFullScreen.isAdded())
+                loadingFullScreen.show(((AppCompatActivity) context).getSupportFragmentManager(), "");
             new Handler().postDelayed(() -> mInterAd.show((Activity) context), 800);
             mInterAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                 @Override
@@ -164,6 +167,7 @@ public class AdsManager {
                 @Override
                 public void onAdDismissedFullScreenContent() {
                     super.onAdDismissedFullScreenContent();
+                    if (!loadingFullScreen.isDetached()) loadingFullScreen.dismissAllowingStateLoss();
                     if (mShowInterAdCallback != null)
                         mShowInterAdCallback.onNextActivity(true);
                 }
@@ -171,6 +175,7 @@ public class AdsManager {
                 @Override
                 public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                     super.onAdFailedToShowFullScreenContent(adError);
+                    if (!loadingFullScreen.isDetached()) loadingFullScreen.dismissAllowingStateLoss();
                     if (mShowInterAdCallback != null)
                         mShowInterAdCallback.onNextActivity(true);
                 }
@@ -183,6 +188,8 @@ public class AdsManager {
                 @Override
                 public void onAdShowedFullScreenContent() {
                     super.onAdShowedFullScreenContent();
+                    if (mShowInterAdCallback != null)
+                        mShowInterAdCallback.onShowedFull();
                     new Handler().postDelayed(() -> loadingFullScreen.dismissAllowingStateLoss(), 150);
                 }
             });
