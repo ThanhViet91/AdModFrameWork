@@ -70,12 +70,6 @@ public class AdsManager {
                 }
             }
             if (isBannerAlready) return;
-//            ShimmerFrameLayout shimmerFrameLayout = ((Activity)context).findViewById(R.id.loading_view);
-//            if (shimmerFrameLayout.getParent() != null) {
-//                ((ViewGroup) shimmerFrameLayout.getParent()).removeView(shimmerFrameLayout);
-//            }
-//            containerAdView.removeAllViews();
-//            containerAdView.addView(shimmerFrameLayout);
             containerAdView.toggleLoadingView(true);
             AdView mAdView = new AdView(context);
             mAdView.setAdUnitId(id.isEmpty() ? AD_BANNER_ID_DEV : id);
