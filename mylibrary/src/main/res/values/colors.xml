@@ -5,6 +5,7 @@
   <color name="gnt_black">#000000</color>
   <color name="gnt_white">#FFFFFF</color>
   <color name="gnt_white_50">#80FFFFFF</color>
+  <color name="gnt_white_30">#4DFFFFFF</color>
   <color name="gnt_red">#FF0000</color>
   <color name="gnt_green">#00FF00</color>
   <color name="gnt_blue">#4285f4</color>
@@ -14,5 +15,5 @@
 
   <color name="gnt_bg_home">#454545</color>
   <color name="gnt_purple">#CD4AFF</color>
-  <color name="gnt_headline_color">#F17CFB</color>
+  <color name="gnt_headline_color">#84DAFD</color>
 </resources>

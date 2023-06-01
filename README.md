@@ -17,7 +17,7 @@
     
     dependencies {
     
-        implementation 'com.github.ThanhViet91:AdModFrameWork:1.3.7'
+        implementation 'com.github.ThanhViet91:AdModFrameWork:lastVersion'
         
     }
 
